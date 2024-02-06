@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.yannikneubert</groupId>
 	<artifactId>spotify-stats-backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>spotify-stats-backend</name>
 	<description>Backend for SpotifyStats</description>
 
