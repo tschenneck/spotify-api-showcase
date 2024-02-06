@@ -6,7 +6,7 @@ import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
-import com.yannikneubert.spotifystatsbackend.config.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,11 +22,16 @@ import java.net.URI;
 public class AuthController {
 
     private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/api/authenticate/");
-    public String code = "";
+
+    @Value("${auth.spotify.client-id}")
+    private static String CLIENT_ID;
+
+    @Value("${auth.spotify.client-secret}")
+    private static String CLIENT_SECRET;
 
     public static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
-            .setClientId(Keys.CLIENT_ID)
-            .setClientSecret(Keys.CLIENT_SECRET)
+            .setClientId(CLIENT_ID)
+            .setClientSecret(CLIENT_SECRET)
             .setRedirectUri(redirectUri)
             .build();
 
@@ -43,8 +48,7 @@ public class AuthController {
 
     @GetMapping(value = "authenticate")
     public void getSpotifyUserCode(@RequestParam("code") String userCode, HttpServletResponse response) throws IOException {
-        code = userCode;
-        AuthorizationCodeRequest authorizationCodeRequest = spotifyApi.authorizationCode(code)
+        AuthorizationCodeRequest authorizationCodeRequest = spotifyApi.authorizationCode(userCode)
                 .build();
 
         try {

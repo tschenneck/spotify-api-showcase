@@ -1,0 +1,31 @@
+# application context properties
+server:
+  servlet.contextPath: /ts/spring-boot/v1
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      base-path: /mgmt
+      # disable default Spring actuator health check
+      path-mapping.health: servicehealth
+      exposure.include:
+      - info
+      - metrics
+      - health
+      - prometheus
+  endpoint:
+    health.show-details: always
+  server.add-application-context-header: false
+
+spring:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+
+jsonDataPath: initialData/pets.json
+
+auth:
+  spotify:
+    client-id: ${SPOTIFY_CLIENT_ID}
+    client-secret: ${SPOTIFY_CLIENT_SECRET}
